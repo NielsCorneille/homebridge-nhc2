@@ -127,6 +127,10 @@ class NHC2Platform implements DynamicPlatformPlugin {
       fan: {
         service: this.Service.Fanv2,
         handlers: [this.addFanSpeedCharacteristic]
+      },
+      sunblind : {
+        service : this.Service.WindowCovering,
+        handlers : [this.addPositionChangeCharacteristic]
       }
     };
 
@@ -239,6 +243,7 @@ class NHC2Platform implements DynamicPlatformPlugin {
       );
   };
 
+<<<<<<< HEAD
   private addFanSpeedCharacteristic = (
     newService: Service,
     newAccessory: PlatformAccessory,
@@ -262,6 +267,25 @@ class NHC2Platform implements DynamicPlatformPlugin {
 
 
 
+||||||| parent of a2bc352 (minimal sun blind support )
+=======
+  private addPositionChangeCharacteristic =
+  ( newService: Service, newAccessory: PlatformAccessory ) => {
+    newService
+      .getCharacteristic(this.Characteristic.TargetPosition)
+      .on(
+        CharacteristicEventTypes.SET,
+        (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
+          this.nhc2.sendPositionChangeCommand(
+            newAccessory.UUID,
+            value as number,
+          );
+          callback();
+        },
+      );
+  };
+
+>>>>>>> a2bc352 (minimal sun blind support )
   private processDeviceProperties(device: Device, service: Service) {
     if (!!device.Properties) {
       device.Properties.forEach(property => {
