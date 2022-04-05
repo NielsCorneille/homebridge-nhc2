@@ -255,7 +255,6 @@ class NHC2Platform implements DynamicPlatformPlugin {
       );
   };
 
-<<<<<<< HEAD
   private addFanSpeedCharacteristic = (
     newService: Service,
     newAccessory: PlatformAccessory,
@@ -279,8 +278,6 @@ class NHC2Platform implements DynamicPlatformPlugin {
 
 
 
-||||||| parent of a2bc352 (minimal sun blind support )
-=======
   private addPositionChangeCharacteristic =
   ( newService: Service, newAccessory: PlatformAccessory ) => {
     newService
@@ -297,7 +294,6 @@ class NHC2Platform implements DynamicPlatformPlugin {
       );
   };
 
->>>>>>> a2bc352 (minimal sun blind support )
   private processDeviceProperties(device: Device, service: Service) {
 
     // Super hacky, but for some reason every device has two services, one we added and another "AccessoryInformation".
