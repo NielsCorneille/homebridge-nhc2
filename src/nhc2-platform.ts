@@ -320,26 +320,34 @@ class NHC2Platform implements DynamicPlatformPlugin {
         }
         if (!! property.Position) {
           let moving = device.Properties?.find(p => p.Moving)?.Moving == "True";
+          let lastDirection = device.Properties?.find(p => p.LastDirection)?.LastDirection ?? '';
           service
             .getCharacteristic(this.Characteristic.CurrentPosition)
             .updateValue(parseInt(property.Position));
 
           service
             .getCharacteristic(this.Characteristic.PositionState)
-            .updateValue(moving ? 1 : 2);
-            /* TODO: find a way to determing INCREASING=1 or DECREASING=0 */
+            .updateValue(this.getPositionState(lastDirection, moving))
 
           if (!moving) {
             service
               .getCharacteristic(this.Characteristic.TargetPosition)
               .updateValue(parseInt(property.Position));
           }
-
         }
       });
     }
   }
 
+  private getPositionState(lastDirection: string, moving: boolean) {
+    if (!moving) {
+      return 2; //STOPPED
+    }
+    if (lastDirection === "Open") {
+      return 1; //INCREASING
+    }
+    return 0; //DECREASING
+  }
   private getSpeed(speed: FanSpeed) {
     if (speed === FanSpeed.Low) {
       return 25;
