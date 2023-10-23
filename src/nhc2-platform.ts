@@ -150,7 +150,7 @@ class NHC2Platform implements DynamicPlatformPlugin {
       const config = mapping[model];
       const accs = accessories.filter(
         acc =>
-          !this.suppressedAccessories.includes(acc.Uuid) && acc.Model === model,
+          !this.suppressedAccessories.includes(acc.Uuid) && acc.Model === model && acc.Type === 'action',
       );
       accs.forEach(acc => {
         const newAccessory = new Accessory(acc.Name as string, acc.Uuid);
