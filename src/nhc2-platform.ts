@@ -2,6 +2,7 @@ import { NHC2 } from "@homebridge-nhc2/nhc2-hobby-api";
 import { Device } from "@homebridge-nhc2/nhc2-hobby-api/lib/event/device";
 import { Event } from "@homebridge-nhc2/nhc2-hobby-api/lib/event/event";
 import { FanSpeed } from "@homebridge-nhc2/nhc2-hobby-api/lib/event/FanSpeed";
+import { PositionState } from "@homebridge-nhc2/nhc2-hobby-api/lib/event/PositionState";
 import {
   API,
   APIEvent,
@@ -320,7 +321,7 @@ class NHC2Platform implements DynamicPlatformPlugin {
         }
         if (!! property.Position) {
           let moving = device.Properties?.find(p => p.Moving)?.Moving == "True";
-          let lastDirection = device.Properties?.find(p => p.LastDirection)?.LastDirection ?? '';
+          let lastDirection = device.Properties?.find(p => p.LastDirection)?.LastDirection ?? PositionState.Stopped;
           service
             .getCharacteristic(this.Characteristic.CurrentPosition)
             .updateValue(parseInt(property.Position));
@@ -339,11 +340,11 @@ class NHC2Platform implements DynamicPlatformPlugin {
     }
   }
 
-  private getPositionState(lastDirection: string, moving: boolean) {
+  private getPositionState(lastDirection: PositionState, moving: boolean) {
     if (!moving) {
       return 2; //STOPPED
     }
-    if (lastDirection === "Open") {
+    if (lastDirection === PositionState.Increasing) {
       return 1; //INCREASING
     }
     return 0; //DECREASING
